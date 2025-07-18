@@ -23,7 +23,7 @@ jobs:
 
     - name: Build with Maven
       run: mvn clean verify
-      working-directory: ./SpringSator  # Adjust this path if necessary
+      working-directory: .  # Use the current directory
 
     # Step 4: Upload test results (for review)
     - name: Publish test reports
