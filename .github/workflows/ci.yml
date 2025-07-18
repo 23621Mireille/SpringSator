@@ -1,0 +1,42 @@
+name: Java CI - Spring Boot
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: windows-latest  # Or ubuntu-latest if preferred
+
+    steps:
+    # Step 1: Checkout code
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    # Step 2: Set up Java 21
+    - name: Set up JDK 21
+      uses: actions/setup-java@v4
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+        cache: 'maven'  # Automatic Maven dependency caching
+
+    # Step 3: Build and test
+    - name: Build with Maven
+      run: mvn clean verify
+      # This will automatically fail on:
+      # - Compilation errors
+      # - Failed tests
+      # - Checkstyle/PMD violations (if configured)
+
+    # Step 4: Upload test results (for review)
+    - name: Publish test reports
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results
+        path: |
+          target/surefire-reports/
+          target/failsafe-reports/
