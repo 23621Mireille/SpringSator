@@ -8,28 +8,22 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest  # Or ubuntu-latest if preferred
+    runs-on: ubuntu-latest  # or windows-latest
 
     steps:
-    # Step 1: Checkout code
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    # Step 2: Set up Java 21
     - name: Set up JDK 21
       uses: actions/setup-java@v4
       with:
         java-version: '21'
         distribution: 'temurin'
-        cache: 'maven'  # Automatic Maven dependency caching
+        cache: 'maven'
 
-    # Step 3: Build and test
     - name: Build with Maven
       run: mvn clean verify
-      # This will automatically fail on:
-      # - Compilation errors
-      # - Failed tests
-      # - Checkstyle/PMD violations (if configured)
+      working-directory: ./SpringSator  # Adjust this path if necessary
 
     # Step 4: Upload test results (for review)
     - name: Publish test reports
